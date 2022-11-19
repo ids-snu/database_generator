@@ -24,7 +24,34 @@ sudo docker rm YOUR_CONTAINER_NAME
 
 <code>user.txt</code> 파일을 읽어와서 사용하는 하나씩 생성함. 생성 완료된 학생의 정보는 <code>done_user.txt</code> 라는 파일이 생성되어서 거기에서 확인하면 됨.
 
+4. 제대로 생성되었는지 확인하는 방법
 
+등록한 학생들의 user / database 정보가 모두 정상적으로 출력되는지 확인.
+역시나 비밀번호는 알아서 잘.
+~~~python
+import pymysql
+
+databaseServerIP = "astronaut.snu.ac.kr"  # IP address of the MySQL database server
+databaseUserName = "root"                 # User name of the database server
+databaseUserPassword = ""                 # Password for the database user
+
+charSet = "utf8mb4"                       # Character set
+cusrorType = pymysql.cursors.DictCursor
+
+connectionInstance = pymysql.connect(host=databaseServerIP, user=databaseUserName, password=databaseUserPassword,
+                                     charset=charSet,cursorclass=cusrorType, port=7000)
+cursorInsatnce = connectionInstance.cursor()
+
+sql = 'select user from mysql.user;'
+cursorInsatnce.execute(sql)
+x = cursorInsatnce.fetchall()
+print(x)
+
+sql = 'show databases;'
+cursorInsatnce.execute(sql)
+x = cursorInsatnce.fetchall()
+print(x)         
+~~~
 
 
 ### Logs
